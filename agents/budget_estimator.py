@@ -1,6 +1,6 @@
 from crewai import Agent
 
-def create_budget_estimator():
+def create_budget_estimator(llm=None):
     """Creates a budget estimation agent"""
     return Agent(
         role='Travel Budget Analyst',
@@ -11,5 +11,5 @@ def create_budget_estimator():
         finding ways to optimize budgets while maintaining quality experiences.""",
         verbose=True,
         allow_delegation=False,
-        llm='openrouter/mistralai/mistral-7b-instruct'
+        llm=llm
     )

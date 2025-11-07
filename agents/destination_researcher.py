@@ -1,6 +1,6 @@
 from crewai import Agent
 
-def create_destination_researcher():
+def create_destination_researcher(llm=None):
     """Creates a destination research agent"""
     return Agent(
         role='Destination Research Specialist',
@@ -11,5 +11,5 @@ def create_destination_researcher():
         deep knowledge of tourist attractions, cultural sites, restaurants, and local experiences.""",
         verbose=True,
         allow_delegation=False,
-        llm='openrouter/mistralai/mistral-7b-instruct'
+        llm=llm
     )

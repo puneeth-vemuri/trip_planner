@@ -3,6 +3,7 @@ from agents.booking_agent import create_booking_agent
 from agents.destination_researcher import create_destination_researcher
 from agents.itinerary_planner import create_itinerary_planner
 from agents.budget_estimator import create_budget_estimator
+from langchain_openai import ChatOpenAI
 import os
 from dotenv import load_dotenv
 
@@ -24,15 +25,19 @@ def plan_trip_with_crew_stream(origin: str, destination: str, days: int, budget:
     except:
         api_key = os.getenv("OPENROUTER_API_KEY")
     
-    os.environ["OPENAI_API_BASE"] = "https://openrouter.ai/api/v1"
-    os.environ["OPENAI_API_KEY"] = api_key
-    os.environ["OPENAI_MODEL_NAME"] = "mistralai/mistral-7b-instruct"
+    # Create LLM instance
+    llm = ChatOpenAI(
+        model="mistralai/mistral-7b-instruct",
+        openai_api_key=api_key,
+        openai_api_base="https://openrouter.ai/api/v1",
+        temperature=0.7
+    )
 
-    # Create agents
-    researcher = create_destination_researcher()
-    flight_agent = create_booking_agent()
-    itinerary_agent = create_itinerary_planner()
-    budget_agent = create_budget_estimator()
+    # Create agents with the LLM
+    researcher = create_destination_researcher(llm)
+    flight_agent = create_booking_agent(llm)
+    itinerary_agent = create_itinerary_planner(llm)
+    budget_agent = create_budget_estimator(llm)
 
     combined_sections = []
 

@@ -1,6 +1,6 @@
 from crewai import Agent
 
-def create_booking_agent():
+def create_booking_agent(llm=None):
     """Creates a flight booking research agent"""
     return Agent(
         role='Flight Booking Specialist',
@@ -10,5 +10,5 @@ def create_booking_agent():
         flight options, timing, and booking advice for the best travel experience.""",
         verbose=True,
         allow_delegation=False,
-        llm='openrouter/mistralai/mistral-7b-instruct'
+        llm=llm
     )

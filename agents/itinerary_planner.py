@@ -1,6 +1,6 @@
 from crewai import Agent
 
-def create_itinerary_planner():
+def create_itinerary_planner(llm=None):
     """Creates an itinerary planning agent"""
     return Agent(
         role='Travel Itinerary Planner',
@@ -11,5 +11,5 @@ def create_itinerary_planner():
         and energy levels to create realistic and enjoyable itineraries.""",
         verbose=True,
         allow_delegation=False,
-        llm='openrouter/mistralai/mistral-7b-instruct'
+        llm=llm
     )
