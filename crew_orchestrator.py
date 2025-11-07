@@ -36,7 +36,7 @@ def plan_trip_with_crew_stream(origin: str, destination: str, days: int, budget:
     
     # Create LLM instance
     llm = ChatOpenAI(
-        model="mistralai/mistral-7b-instruct",
+        model="openrouter/mistralai/mistral-7b-instruct",
         openai_api_key=api_key,
         openai_api_base="https://openrouter.ai/api/v1",
         temperature=0.7
