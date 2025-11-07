@@ -1,3 +1,15 @@
+---
+title: Trip Planner AI
+emoji: 🌍
+colorFrom: blue
+colorTo: green
+sdk: streamlit
+sdk_version: "1.33.0"
+app_file: webapp.py
+pinned: false
+license: mit
+---
+
 # 🌍 Trip Planner AI
 
 An intelligent multi-agent trip planning system powered by CrewAI, OpenRouter, and Streamlit. Get personalized travel plans with real-time agent progress tracking.
