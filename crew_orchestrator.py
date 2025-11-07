@@ -17,8 +17,15 @@ def plan_trip_with_crew_stream(origin: str, destination: str, days: int, budget:
     The final event includes the full combined result in 'result'.
     """
     # Set up LLM for agents (using OpenRouter)
+    # Try Streamlit secrets first, fallback to env variable
+    try:
+        import streamlit as st
+        api_key = st.secrets.get("OPENROUTER_API_KEY")
+    except:
+        api_key = os.getenv("OPENROUTER_API_KEY")
+    
     os.environ["OPENAI_API_BASE"] = "https://openrouter.ai/api/v1"
-    os.environ["OPENAI_API_KEY"] = os.getenv("OPENROUTER_API_KEY")
+    os.environ["OPENAI_API_KEY"] = api_key
     os.environ["OPENAI_MODEL_NAME"] = "mistralai/mistral-7b-instruct"
 
     # Create agents
