@@ -17,13 +17,22 @@ def plan_trip_with_crew_stream(origin: str, destination: str, days: int, budget:
       { 'type': 'start'|'done'|'final'|'error', 'step': int, 'agent': str, 'result': str|None }
     The final event includes the full combined result in 'result'.
     """
-    # Set up LLM for agents (using OpenRouter)
-    # Try Streamlit secrets first, fallback to env variable
-    try:
-        import streamlit as st
-        api_key = st.secrets.get("OPENROUTER_API_KEY")
-    except:
-        api_key = os.getenv("OPENROUTER_API_KEY")
+    # Get API key from multiple sources
+    api_key = None
+    
+    # Try environment variable first (works in HuggingFace and locally)
+    api_key = os.getenv("OPENROUTER_API_KEY")
+    
+    # Try Streamlit secrets (for Streamlit Cloud)
+    if not api_key:
+        try:
+            import streamlit as st
+            api_key = st.secrets.get("OPENROUTER_API_KEY")
+        except:
+            pass
+    
+    if not api_key:
+        raise ValueError("OPENROUTER_API_KEY not found. Please set it in environment variables or secrets.")
     
     # Create LLM instance
     llm = ChatOpenAI(
