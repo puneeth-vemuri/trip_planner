@@ -1,9 +1,8 @@
-from crewai import Crew, Task
+from crewai import Crew, Task, LLM
 from agents.booking_agent import create_booking_agent
 from agents.destination_researcher import create_destination_researcher
 from agents.itinerary_planner import create_itinerary_planner
 from agents.budget_estimator import create_budget_estimator
-from langchain_openai import ChatOpenAI
 import os
 from dotenv import load_dotenv
 
@@ -39,11 +38,11 @@ def plan_trip_with_crew_stream(origin: str, destination: str, days: int, budget:
     # Prefix with 'openrouter/' for litellm compatibility if not already present
     llm_model = model_name if model_name.startswith("openrouter/") else f"openrouter/{model_name}"
 
-    # Create LLM instance
-    llm = ChatOpenAI(
+    # Create native CrewAI LLM instance
+    llm = LLM(
         model=llm_model,
-        openai_api_key=api_key,
-        openai_api_base="https://openrouter.ai/api/v1",
+        api_key=api_key,
+        base_url="https://openrouter.ai/api/v1",
         temperature=0.7
     )
 
