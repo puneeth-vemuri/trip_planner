@@ -1,14 +1,20 @@
-def openrouter_chat(messages, model="mistralai/mistral-7b-instruct"): 
+def openrouter_chat(messages, model=None): 
 	"""
 	Use OpenRouter.ai's OpenAI-compatible endpoint for chat completion.
 	messages: list of dicts, e.g. [{"role": "user", "content": "..."}]
-	model: model string, default is mistralai/mistral-7b-instruct
+	model: model string, default is fetched from environment variable (or meta-llama/llama-3.3-70b-instruct:free)
 	Returns the response text or error message.
 	"""
 	import os
 	from openai import OpenAI
 	from dotenv import load_dotenv
 	load_dotenv()
+	if not model:
+		model = os.getenv("OPENROUTER_MODEL", "mistralai/mistral-nemo")
+	# Strip 'openrouter/' prefix if specified in .env, as OpenRouter API itself expects the clean ID
+	if model.startswith("openrouter/"):
+		model = model.replace("openrouter/", "", 1)
+
 	client = OpenAI(
 		base_url="https://openrouter.ai/api/v1",
 		api_key=os.environ.get("OPENROUTER_API_KEY")

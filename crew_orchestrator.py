@@ -34,9 +34,14 @@ def plan_trip_with_crew_stream(origin: str, destination: str, days: int, budget:
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY not found. Please set it in environment variables or secrets.")
     
+    # Get model name from environment variables, defaulting to a highly capable Mistral model
+    model_name = os.getenv("OPENROUTER_MODEL", "mistralai/mistral-nemo")
+    # Prefix with 'openrouter/' for litellm compatibility if not already present
+    llm_model = model_name if model_name.startswith("openrouter/") else f"openrouter/{model_name}"
+
     # Create LLM instance
     llm = ChatOpenAI(
-        model="openrouter/mistralai/mistral-7b-instruct",
+        model=llm_model,
         openai_api_key=api_key,
         openai_api_base="https://openrouter.ai/api/v1",
         temperature=0.7
