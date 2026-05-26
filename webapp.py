@@ -1,6 +1,15 @@
+# Try to use pysqlite3-binary to bypass outdated SQLite versions on Linux (e.g. Hugging Face Spaces)
+try:
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass
+
 import streamlit as st
 from crew_orchestrator import plan_trip_with_crew_stream
 from utils.export_utils import generate_pdf_from_text
+
 
 st.set_page_config(page_title="Trip Planner AI", page_icon="🌍")
 st.title("🌍 Trip Planner AI")
